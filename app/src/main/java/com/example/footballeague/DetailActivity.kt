@@ -13,34 +13,9 @@ class DetailActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-//        setContentView(R.layout.activity_detail)
+        setContentView(R.layout.activity_detail)
 
-        val league = intent.getParcelableExtra<League>("league")
 
-        scrollView {
-            verticalLayout {
-                lparams(width = matchParent, height = wrapContent)
-                padding = dip(16)
-
-                imageView {
-                    setImageResource(league.leagueLogo!!)
-                }.lparams {
-                    height = dip(200)
-                    width = dip(200)
-                    gravity = Gravity.CENTER_HORIZONTAL
-                }
-
-                textView {
-                    text = league.leagueName.toString()
-                    textSize = 16f
-                }.lparams { margin = dip(16) }
-
-                textView {
-                    text = league.leagueDescription.toString()
-                    textSize = 16f
-                }.lparams { margin = dip(16) }
-            }
-        }
 
     }
 }

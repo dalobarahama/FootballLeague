@@ -1,45 +1,36 @@
 package com.example.footballeague
 
-import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import org.jetbrains.anko.matchParent
-import org.jetbrains.anko.recyclerview.v7.recyclerView
-import org.jetbrains.anko.toast
-import org.jetbrains.anko.verticalLayout
+import androidx.recyclerview.widget.RecyclerView
 
 class MainActivity : AppCompatActivity() {
 
-    var items: ArrayList<League> = ArrayList()
+    private lateinit var recyclerView: RecyclerView
+    private var leagueList: ArrayList<League> = arrayListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-//        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_main)
 
-        verticalLayout {
-            recyclerView {
-                lparams(width = matchParent, height = matchParent)
-                layoutManager = LinearLayoutManager(context)
-                adapter = LeagueAdapter(context, items) {
-                    val intent = Intent(context, DetailActivity::class.java)
-                    intent.putExtra("league", it)
+        recyclerView = findViewById(R.id.recyclerview)
+        recyclerView.setHasFixedSize(true)
 
-                    startActivity(intent)
+        showRecyclerList()
+    }
 
-                    toast("Anda memilih ${it.leagueName}")
-
-                }
-            }
-        }
+    private fun showRecyclerList() {
+        recyclerView.layoutManager = LinearLayoutManager(this)
+        val leagueAdapter = LeagueAdapter(leagueList)
+        recyclerView.adapter = leagueAdapter
 
         val leagueName = resources.getStringArray(R.array.league_name)
-        val leagueLogo = resources.obtainTypedArray(R.array.league_logo)
         val leagueDescription = resources.getStringArray(R.array.league_description)
-
-        items.clear()
+        val leagueLogo = resources.obtainTypedArray(R.array.league_logo)
+        leagueList.clear()
         for (i in leagueName.indices) {
-            items.add(
+            leagueList.add(
                 League(
                     leagueName[i],
                     leagueDescription[i],
