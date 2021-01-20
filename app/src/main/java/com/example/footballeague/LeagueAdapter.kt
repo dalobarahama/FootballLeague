@@ -5,12 +5,17 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import org.jetbrains.anko.find
 
 class LeagueAdapter(private val listLeague: List<League>) :
     RecyclerView.Adapter<LeagueAdapter.LeagueViewHolder>() {
+    private lateinit var onItemClickCallback: OnItemClickCallback
+
+    fun setOnItemClickCallback(onItemClickCallback: OnItemClickCallback){
+        this.onItemClickCallback = onItemClickCallback
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LeagueViewHolder {
         val view: View =
@@ -26,6 +31,8 @@ class LeagueAdapter(private val listLeague: List<League>) :
         Glide.with(holder.itemView.context)
             .load(league.leagueLogo)
             .into(holder.leagueLogo)
+
+        holder.itemView.setOnClickListener { onItemClickCallback.onItemClicked(league) }
     }
 
     override fun getItemCount(): Int {
@@ -34,7 +41,11 @@ class LeagueAdapter(private val listLeague: List<League>) :
 
 
     inner class LeagueViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val leagueName: TextView = itemView.find(R.id.league_name)
-        val leagueLogo: ImageView = itemView.find(R.id.league_image)
+        val leagueName: TextView = itemView.findViewById(R.id.league_name)
+        val leagueLogo: ImageView = itemView.findViewById(R.id.league_image)
+    }
+
+    interface OnItemClickCallback {
+        fun onItemClicked(data: League)
     }
 }

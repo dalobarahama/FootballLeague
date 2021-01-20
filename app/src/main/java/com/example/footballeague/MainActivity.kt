@@ -1,6 +1,7 @@
 package com.example.footballeague
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -40,6 +41,16 @@ class MainActivity : AppCompatActivity() {
         }
 
         leagueLogo.recycle()
+
+        leagueAdapter.setOnItemClickCallback(object : LeagueAdapter.OnItemClickCallback {
+            override fun onItemClicked(data: League) {
+                showSelectedLeague(data)
+            }
+        })
+    }
+
+    private fun showSelectedLeague(league: League) {
+        Toast.makeText(this, "Selected " + league.leagueName, Toast.LENGTH_SHORT).show()
     }
 
 }
