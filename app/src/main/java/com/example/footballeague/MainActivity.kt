@@ -1,7 +1,7 @@
 package com.example.footballeague
 
+import android.content.Intent
 import android.os.Bundle
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -50,7 +50,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun showSelectedLeague(league: League) {
-        Toast.makeText(this, "Selected " + league.leagueName, Toast.LENGTH_SHORT).show()
+        val intent = Intent(this, DetailActivity::class.java)
+        intent.putExtra(DetailActivity.LEAGUE_DATA, league)
+        startActivity(intent)
     }
 
 }
