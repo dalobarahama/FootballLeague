@@ -6,7 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
-class MainActivity : AppCompatActivity() {
+class LeagueActivity : AppCompatActivity() {
 
     private lateinit var recyclerView: RecyclerView
     private var leagueList: ArrayList<League> = arrayListOf()
@@ -15,17 +15,32 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        recyclerView = findViewById(R.id.recyclerview)
-        recyclerView.setHasFixedSize(true)
-
         showRecyclerList()
     }
 
     private fun showRecyclerList() {
+        recyclerView = findViewById(R.id.recyclerview)
+        recyclerView.setHasFixedSize(true)
         recyclerView.layoutManager = LinearLayoutManager(this)
         val leagueAdapter = LeagueAdapter(leagueList)
         recyclerView.adapter = leagueAdapter
 
+        assignDummyData();
+
+        leagueAdapter.setOnItemClickCallback(object : LeagueAdapter.OnItemClickCallback {
+            override fun onItemClicked(data: League) {
+                showSelectedLeague(data)
+            }
+        })
+    }
+
+    private fun showSelectedLeague(league: League) {
+        val intent = Intent(this, DetailActivity::class.java)
+        intent.putExtra(DetailActivity.LEAGUE_DATA, league)
+        startActivity(intent)
+    }
+
+    private fun assignDummyData() {
         val leagueName = resources.getStringArray(R.array.league_name)
         val leagueDescription = resources.getStringArray(R.array.league_description)
         val leagueLogo = resources.obtainTypedArray(R.array.league_logo)
@@ -39,20 +54,7 @@ class MainActivity : AppCompatActivity() {
                 )
             )
         }
-
         leagueLogo.recycle()
-
-        leagueAdapter.setOnItemClickCallback(object : LeagueAdapter.OnItemClickCallback {
-            override fun onItemClicked(data: League) {
-                showSelectedLeague(data)
-            }
-        })
-    }
-
-    private fun showSelectedLeague(league: League) {
-        val intent = Intent(this, DetailActivity::class.java)
-        intent.putExtra(DetailActivity.LEAGUE_DATA, league)
-        startActivity(intent)
     }
 
 }
